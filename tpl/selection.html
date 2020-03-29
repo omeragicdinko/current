@@ -1,0 +1,61 @@
+
+<div style = "margin-top:10%; margin-left:10%">
+
+
+
+  Pick a car:
+  <select id="car_element"  style="width: 400px">
+      <option value="toyota">Toyota</option>
+      <option value="bmw">BMW</option>
+      <option value="citroen">Citroen</option>
+      <option value="ford">Ford</option>
+      <option value="kia">Kia</option>
+      <option value="passat">Passat</option>
+      <option value="golf">Golf</option>
+
+  </select>
+
+  <br/><br/><br/>
+  Pick a color:
+  <select class="colors" style="width:400px;"></select>
+</div>
+<script type="text/javascript">
+  $('#car_element').select2({
+    placeholder: "Select car",
+  });
+  var colors = [{
+     id:'ORANGE',
+     text: 'orange'
+    },
+    {
+      id: 'BLUE',
+      text: 'blue'
+    },
+    {
+      id: 'RED',
+      text: 'red'
+    },
+    {
+      id: 'BLACK',
+      text: 'black'
+    },
+    {
+      id: 'WHITE',
+      text: 'white'
+    },
+    {
+      id: 'GREEN',
+      text: 'green'
+    },
+    {
+      id: 'YELLOW',
+      text: 'yellow'
+  }];
+$('.colors').select2({
+    placeholder: "Select color",
+    data: colors
+  });
+
+
+
+</script>
