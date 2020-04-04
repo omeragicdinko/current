@@ -17,6 +17,10 @@ $(document).ready(function() {
     view: 'datatable',
     load: 'datatable.html'
   });
+  app.route({
+    view: 'comments',
+    load: 'comments.html'
+  });
 
   // run app
   app.run();

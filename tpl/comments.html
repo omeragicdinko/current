@@ -1,0 +1,67 @@
+<style>
+  .error{
+    color:red;
+  }
+</style>
+<h1>COMMENTS</h1>
+
+<button type="button" class="btn btn-primary" data-target="#userCommentModal" onclick="open_modal_user_comment()">
+  Add a comment
+</button>
+
+<div class="modal" id="userCommentModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="user_comment_form">
+      <div class="modal-header">
+        <h4 class="modal-title" id="userCommentModalLabel">User Comment</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <div>
+              <label for="user_name_comment">Full Name:</label>
+              <input type="text" id="user_name_comment" name="user_name_comment" class="form-control"></input>
+            </div>
+            <div>
+              <label for="user_email_comment">Email:</label>
+              <input type="email" id="user_email_comment" name="user_email_comment" class="form-control"></input>
+            </div>
+            <div>
+              <br></br>
+              <label for="user_comment">Comment:</label>
+              <textarea name="user_comment" rows="8" cols="61%" ></textarea>
+            </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" >Submit Comment</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function open_modal_user_comment(){
+    $("#userCommentModal").modal("toggle");
+  }
+  $("#user_comment_form").validate({
+    rules: {
+      user_name_comment: {
+        required: true,
+        minlength: 3
+      },
+      user_email_comment: {
+        required: true,
+        email:true
+      },
+      user_comment: {
+        required: true
+      }
+    },
+    submitHandler: function(form) {
+      $("#userCommentModal").modal("toggle");
+    }
+  });
+</script>
