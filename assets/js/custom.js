@@ -6,8 +6,8 @@ $(document).ready(function() {
 
   // define routes
   app.route({
-    view: 'image1',
-    load: 'image1.html'
+    view: 'forms',
+    load: 'forms.html'
   });
   app.route({
     view: 'selection',
