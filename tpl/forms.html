@@ -122,11 +122,11 @@ get_users();
       $.get( "rest/users", function( data ) {
         var html = '';
         for(var i = 0; i < data.length; i++){
-          html += '<tr> <td>' + data[i].user_name + '</td>';
-          html += '<td>' + data[i].user_surname + '</td>';
-          html += '<td>' + data[i].user_phone_number + '</td>';
-          html += '<td>' + data[i].user_email + '</td>';
-          html += '<td><button type="button" class="btn btn-danger" onclick="delete_user('+data[i].id_user+');">Delete</button></td> </tr>';
+          html += '<tr> <td>' + data[i].name + '</td>';
+          html += '<td>' + data[i].surname + '</td>';
+          html += '<td>' + data[i].email + '</td>';
+          html += '<td>' + data[i].phone_number + '</td>';
+          html += '<td><button type="button" class="btn btn-danger" onclick="delete_user('+data[i].id+');">Delete</button></td> </tr>';
         }
         $("#table_content").html(html);
       });
