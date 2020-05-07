@@ -18,6 +18,11 @@ class BaseDao {
     return $stmt->fetchAll();
   }
 
+  protected function execute_query1($sql_query, $params){
+    $stmt = $this->pdo->prepare($sql_query);
+    $stmt->execute($params);
+  }
+
   protected function execute_insert($entity){
     // entity is assiciative array storage of object - key/value storage
     $columns = "";

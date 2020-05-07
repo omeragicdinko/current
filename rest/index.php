@@ -7,9 +7,10 @@ header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS, PATCH');
 require_once('../vendor/autoload.php');
 require_once('config.php');
 require_once('dao/UserDao.class.php');
+require_once('dao/CarDao.class.php');
 
 Flight::register('user_dao', 'UserDao');
-
+Flight::register('car_dao', 'CarDao');
 
 
 Flight::route('GET /users', function(){
@@ -39,6 +40,16 @@ Flight::route('POST /login', function(){
 
 });
 
+Flight::route('GET /cars', function(){
+ $cars = Flight::car_dao()->get_car_info();
+ Flight::json($cars);
+});
+
+
+
+Flight::route('POST /car/@id', function($id){
+    Flight::car_dao()->update_availability($id);
+});
 //napravili listu auta i prebaciti ih u listu sa searchom
 //napraviti stranice za auta automatske sa dodatnim informacijama i dodatnim opcijama
 //dodati submission za comentare i stranicu sa komentarima

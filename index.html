@@ -45,7 +45,7 @@
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#selection">Selection</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#datatable">Datatable</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#car_list">Car List</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#comments">Comments</a>
@@ -64,7 +64,7 @@
     <main id="spapp" role="main">
       <section id="forms">Forms</section>
       <section id="selection">Selection</section>
-      <section id="datatable">Datatable</section>
+      <section id="car_list">Datatable</section>
       <section id="comments">Comments</section>
     </main>
 
@@ -77,10 +77,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/1.3.1/js/toastr.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
 
 <script>
   if (get_logged_user_id()){
-    toastr.success("Welcome dino");
+    toastr.success("Welcome user");
     $('#only-guests').hide();
     $('#only-users').show();
   }

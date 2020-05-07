@@ -1,0 +1,136 @@
+
+
+<div class="page-header">
+  <h1>Car List</h1>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <table id="cars-table" class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Base Name</th>
+          <th>Base Location</th>
+          <th>Phone Number</th>
+          <th>Model</th>
+          <th>Production Year</th>
+          <th>Fuel</th>
+          <th>Deposit</th>
+          <th>Daily Cost</th>
+          <th>Availability</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+<!--Modal: modalPush-->
+<div class="modal fade" id="modalPush" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-info" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="modal-header d-flex justify-content-center">
+        <p class="heading">Important notification</p>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+
+        <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+
+        <p>Please use your reservation code below while renting the reserved car.</p>
+        <a id="code"></a>
+
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+        <a type="button" class="btn btn-outline-info waves-effect" data-dismiss="modal">Close</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: modalPush-->
+<script>
+get_cars();
+   function get_cars(){
+     $.get('rest/cars', function(data){
+        var dataSet = [];
+        for(var i = 0; i < data.length; i++){
+          dataSet.push([
+            data[i].id,
+            data[i].base_name,
+            data[i].location,
+            data[i].phone_number,
+            data[i].model,
+            data[i].production_year,
+            data[i].fuel,
+            data[i].deposit,
+            data[i].daily_cost,
+            data[i].availability,
+          ]);
+        }
+
+        $("#cars-table").DataTable({
+          data: dataSet,
+          columns: [
+            {title: "ID", visible:false},
+            {title: "Base Name"},
+            {title: "Base Location"},
+            {title: "Phone Number"},
+            {title: "Model"},
+            {title: "Production Year"},
+            {title: "Fuel"},
+            {title: "Deposit"},
+            {title: "Daily Cost"},
+            {title: "Availability"}
+          ],
+          dom: 'Bfrtip',
+          buttons: [
+          {
+
+           text: 'Reserve',
+           action: function ( e, dt, button, config ) {
+             if($('#cars-table').DataTable().row('.selected').data()){
+                var id = $('#cars-table').DataTable().row('.selected').data()[0];
+                var data = $('#cars-table').DataTable().row('.selected').data()[9];
+                if(String(data)=='NO'){
+                  toastr.error("That car is not available");
+                }else{
+                  $.post('rest/car/'+id, id).done(function(data) {
+                    toastr.success("Successfully reserved");
+                    $('#cars-table').DataTable().clear().destroy();
+                    get_cars();
+                    var code=id+333;
+                    $("#code").text(code);
+                    $("#modalPush").modal("show");
+                  }).fail(function(error) {
+                    toastr.error(error.responseText);
+                  });
+
+                  }
+              }else{
+                toastr.error("Please select a car");
+              }
+           }
+       }
+          ],
+          "pageLength": 5,
+          "lengthMenu": [2, 5, 10, 25, 50, "All"]
+        });
+     })
+   }
+
+   $('#tbody').on( 'click', 'tr', function () {
+      $('.selected').toggleClass('selected');
+       $(this).toggleClass('selected');
+   } );
+
+</script>

@@ -14,8 +14,8 @@ $(document).ready(function() {
     load: 'selection.html'
   });
   app.route({
-    view: 'datatable',
-    load: 'datatable.html'
+    view: 'car_list',
+    load: 'car_list.html'
   });
   app.route({
     view: 'comments',
