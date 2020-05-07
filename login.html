@@ -43,20 +43,40 @@
       <div class="modal-content">
         <form id="register-form">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Enter your data for registation</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h4 class="modal-title" id="exampleModalLabel">Enter your data for registation</h4>
+            <button type="button" style="display:inline-block;" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" class="form-control" name="full_name" placeholder="Enter your name">
+                <div>
+                  <label for="fname">First Name:</label>
+                  <input type="text" name="fname" class="form-control" placeholder="Enter your name"></input>
+                </div>
+                <div>
+                  <label for="lname">Last Name:</label>
+                  <input type="text" name="lname" class="form-control" placeholder="Enter your surname"></input>
                 </div>
                 <div class="form-group">
                     <label>Email address</label>
                     <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div>
+                  <label for="address">Address:</label>
+                  <input type="text" name="address" class="form-control" placeholder="Enter your address"></input>
+                </div>
+                <div>
+                  <label for="city">City:</label>
+                  <input type="text" name="city" class="form-control" placeholder="Enter your city"></input>
+                </div>
+                <div>
+                  <label for="country">Country:</label>
+                  <input type="text" name="country" class="form-control" placeholder="Enter your country"></input>
+                </div>
+                <div>
+                  <label for="phone_number">Phone number:</label>
+                  <input type="number" name="phone_number" class="form-control" placeholder="Enter your phone number"></input>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
@@ -111,8 +131,13 @@
   $('#register-form').validate({
     submitHandler: function(form) {
       var user = {
-        name: $('#register-form input[name="full_name"]').val(),
+        name: $('#register-form input[name="fname"]').val(),
+        surname: $('#register-form input[name="lname"]').val(),
         email: $('#register-form input[type="email"]').val(),
+        street_address: $('#register-form input[name="address"]').val(),
+        city: $('#register-form input[name="city"]').val(),
+        country: $('#register-form input[name="country]').val(),
+        phone_number: $('#register-form input[name="phone_number"]').val(),
         password: $('#register-form input[type="password"]').val()
       }
 
