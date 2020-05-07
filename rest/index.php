@@ -39,13 +39,12 @@ Flight::route('POST /login', function(){
 
 });
 
-//prebaciti registration formu sa formi u login.html, validacija i ostale zavrzlame
 //napravili listu auta i prebaciti ih u listu sa searchom
 //napraviti stranice za auta automatske sa dodatnim informacijama i dodatnim opcijama
 //dodati submission za comentare i stranicu sa komentarima
 //napraviti admin/worker ui i user ui razlicit
 //dodati mogucnost dodavanja novog radnika samo sa worker/admin page-a
- 
+
 /*Flight::route('DELETE /user/@id', function($id){
      $delete = "DELETE FROM users WHERE id = :id";
 
