@@ -69,7 +69,7 @@ Flight::route('POST /comment', function(){
 });
 
 //dodati da se auta mogu modificirati i brisati kao i workeri..
-//select dodati u id_base da bi admin mogao birati zbog fk
+//select dodati u id_base da bi admin mogao birati zbog fk https://materializecss.com/select.html
 //autentikacija
 //ifnal touch
 
