@@ -6,12 +6,7 @@
 <h1>FORMS</h1>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-target="#userRegistrationModal" onclick="open_modal_user_registration()">
-  User Registration
-</button>
-<button type="button" class="btn btn-primary" data-target="#userLoginModal" onclick="open_modal_user_login()">
-  User Login
-</button>
+
 <table class="table">
    <thead>
      <tr>
@@ -56,61 +51,6 @@
 
 
 
-<div class="modal fade" id="userRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <form id="user_registration_form">
-      <div class="modal-header">
-        <h4 class="modal-title" id="userRegistratinModalLabel">User Registation</h4>
-        <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-            <div>
-              <label for="fname">First Name:</label>
-              <input type="text" id="fname" name="fname" class="form-control"></input>
-            </div>
-            <div>
-              <label for="lname">Last Name:</label>
-              <input type="text" id="lname" name="lname" class="form-control"></input>
-            </div>
-            <div>
-              <label for="user_email">Email:</label>
-              <input type="email" id="user_email" name="user_email" class="form-control"></input>
-            </div>
-            <div>
-              <label for="user_address">Street address:</label>
-              <input type="text" id="user_address" name="user_address" class="form-control"></input>
-            </div>
-            <div>
-              <label for="user_city">City:</label>
-              <input type="text" id="user_city" name="user_city" class="form-control"></input>
-            </div>
-            <div>
-              <label for="user_country">Country:</label>
-              <input type="text" id="user_country" name="user_country" class="form-control"></input>
-            </div>
-            <div>
-              <label for="user_phone_number">Phone number:</label>
-              <input type="number" id="user_phone_number" name="user_phone_number" class="form-control"></input>
-            </div>
-            <div>
-              <label for="psword">Password:</label>
-              <input type="password" id="psword" name="psword" class="form-control"></input>
-            </div>
-            <div>
-              <label for="psword_confirm">Confirm Password:</label>
-              <input type="password" id="psword_confirm" name="psword_confirm" class="form-control"></input>
-            </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 
 
@@ -147,9 +87,7 @@ get_users();
 }
 
 
-  function open_modal_user_registration(){
-    $("#userRegistrationModal").modal("toggle");
-  }
+
 
   function open_modal_user_login(){
     $("#userLoginModal").modal("toggle");

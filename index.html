@@ -42,13 +42,13 @@
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#forms">Forms</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#selection">Selection</a>
-          </li>
-          <li class="nav-item mx-0 mx-lg-1">
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#car_list">Car List</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#comments">Comments</a>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1">
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#admin" id="only-admin" >Admin</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="" id="only-users" onclick="logout();">Logout</a>
@@ -63,8 +63,8 @@
   </nav>
     <main id="spapp" role="main">
       <section id="forms">Forms</section>
-      <section id="selection">Selection</section>
       <section id="car_list">Datatable</section>
+      <section id="admin">Admin</section>
       <section id="comments">Comments</section>
     </main>
 
@@ -81,13 +81,22 @@
 
 <script>
   if (get_logged_user_id()){
-    toastr.success("Welcome user");
-    $('#only-guests').hide();
-    $('#only-users').show();
+    if(get_logged_user_job()){
+      $('#only-guests').hide();
+      $('#only-users').show();
+      $('#only-admin').show();
+    }else{
+      toastr.success("Welcome user");
+      $('#only-guests').hide();
+      $('#only-users').show();
+      $('#only-admin').hide();
+    }
+
   }
   else{
     window.location = "login.html";
   }
+
 
   function logout(){
     window.localStorage.clear();
@@ -100,6 +109,19 @@
       user = JSON.parse(user);
       if (user.id){
         return user.id;
+      }else{
+        return null;
+      }
+    }else{
+      return null;
+    }
+  }
+  function get_logged_user_job(){
+    var user = window.localStorage.getItem("user");
+    if (user){
+      user = JSON.parse(user);
+      if (user.job){
+        return user.job;
       }else{
         return null;
       }

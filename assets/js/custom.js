@@ -10,12 +10,12 @@ $(document).ready(function() {
     load: 'forms.html'
   });
   app.route({
-    view: 'selection',
-    load: 'selection.html'
-  });
-  app.route({
     view: 'car_list',
     load: 'car_list.html'
+  });
+  app.route({
+    view: 'admin',
+    load: 'admin.html'
   });
   app.route({
     view: 'comments',
