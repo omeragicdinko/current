@@ -27,7 +27,6 @@
 </div>
 
 
-
 <!--Modal: modalPush-->
 <div class="modal fade" id="modalPush" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
@@ -58,8 +57,12 @@
   </div>
 </div>
 <!--Modal: modalPush-->
+
+
 <script>
+
 get_cars();
+
    function get_cars(){
      $.get('rest/cars', function(data){
         var dataSet = [];
@@ -95,7 +98,6 @@ get_cars();
           dom: 'Bfrtip',
           buttons: [
           {
-
            text: 'Reserve',
            action: function ( e, dt, button, config ) {
              if($('#cars-table').DataTable().row('.selected').data()){
@@ -125,6 +127,7 @@ get_cars();
           "pageLength": 5,
           "lengthMenu": [2, 5, 10, 25, 50, "All"]
         });
+
      })
    }
 
@@ -132,5 +135,10 @@ get_cars();
       $('.selected').toggleClass('selected');
        $(this).toggleClass('selected');
    } );
+
+   
+
+
+
 
 </script>

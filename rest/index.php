@@ -9,15 +9,37 @@ require_once('config.php');
 require_once('dao/UserDao.class.php');
 require_once('dao/CarDao.class.php');
 require_once('dao/CommentDao.class.php');
+require_once('dao/RentBaseDao.class.php');
 
 Flight::register('user_dao', 'UserDao');
 Flight::register('car_dao', 'CarDao');
 Flight::register('comment_dao', 'CommentDao');
+Flight::register('base_dao', 'RentBaseDao');
 
 
 Flight::route('GET /users', function(){
  $users = Flight::user_dao()->get_all();
  Flight::json($users);
+});
+
+Flight::route('GET /bases', function(){
+ $bases = Flight::base_dao()->get_all();
+ Flight::json($bases);
+});
+
+Flight::route('POST /base', function(){
+    $base = Flight::request()->data->getData();
+    Flight::base_dao()->add($base);
+});
+
+Flight::route('GET /user/@id', function($id){
+ $users = Flight::user_dao()->get_user_by_id($id);
+ Flight::json($users);
+});
+
+Flight::route('GET /car/@id', function($id){
+ $cars = Flight::car_dao()->get_car_by_id($id);
+ Flight::json($cars);
 });
 
 Flight::route('POST /user', function(){
@@ -43,16 +65,12 @@ Flight::route('POST /login', function(){
   }else{
     Flight::halt(404, 'User not found');
   }
-
 });
-
 
 Flight::route('GET /cars', function(){
  $cars = Flight::car_dao()->get_car_info();
  Flight::json($cars);
 });
-
-
 
 Flight::route('POST /car/@id', function($id){
     Flight::car_dao()->update_availability($id);
@@ -68,17 +86,35 @@ Flight::route('POST /comment', function(){
     Flight::comment_dao()->add($comment);
 });
 
-//dodati da se auta mogu modificirati i brisati kao i workeri..
+Flight::route('GET /workers', function(){
+ $workers = Flight::user_dao()->get_workers();
+ Flight::json($workers);
+});
+
+Flight::route('DELETE /user/@id', function($id){
+  Flight::user_dao()->delete_user($id);
+});
+
+Flight::route('DELETE /base/@id', function($id){
+  Flight::base_dao()->delete_base($id);
+});
+
+Flight::route('GET /non-workers', function(){
+ $nonWorkers = Flight::user_dao()->get_non_workers();
+ Flight::json($nonWorkers);
+});
+
+Flight::route('POST /non-worker/'+id, function($id){
+  Flight::user_dao()->delete_non_worker($id);
+});
+
+
 //select dodati u id_base da bi admin mogao birati zbog fk https://materializecss.com/select.html
 //autentikacija
-//ifnal touch
+//final touch
+//select za avvailability
 
-/*Flight::route('DELETE /user/@id', function($id){
-     $delete = "DELETE FROM users WHERE id = :id";
 
-     $stmt= Flight::db()->prepare($delete);
-     $stmt->execute([":id" => $id]);
-});*/
 
 
 Flight::start();

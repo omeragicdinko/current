@@ -1,0 +1,104 @@
+<style>
+  .error{
+    color:red;
+  }
+</style>
+<h1>Users</h1>
+
+<!-- Button trigger modal -->
+
+<table id="users-table" class="table">
+   <thead>
+     <tr>
+       <th scope="col">ID</th>
+       <th scope="col">Name</th>
+       <th scope="col">Surname</th>
+       <th scope="col">Email</th>
+       <th scope="col">Street Address</th>
+       <th scope="col">City</th>
+       <th scope="col">Country</th>
+       <th scope="col">Phone Number</th>
+       <th scope="col">Password</th>
+     </tr>
+   </thead>
+   <tbody id="table_content">
+   </tbody>
+</table>
+
+<script>
+get_non_workers();
+    function get_non_workers(){
+      $.get( "rest/non-workers", function( data ) {
+        var dataSet = [];
+        for(var i = 0; i < data.length; i++){
+          dataSet.push([
+            data[i].id,
+            data[i].name,
+            data[i].surname,
+            data[i].email,
+            data[i].street_address,
+            data[i].city,
+            data[i].country,
+            data[i].phone_number,
+            data[i].password,
+          ]);
+        }
+
+        $("#users-table").DataTable({
+          data: dataSet,
+          columns: [
+            {title: "ID", visible:false},
+            {title: "Name"},
+            {title: "Surname"},
+            {title: "Email"},
+            {title: "Street Address"},
+            {title: "City"},
+            {title: "Country"},
+            {title: "Phone Number"},
+            {title: "Password"}
+          ],
+          dom: 'Bfrtip',
+          buttons: [
+          {
+           text: 'Delete user',
+           action: function ( e, dt, button, config ) {
+             if($('#users-table').DataTable().row('.selected').data()){
+                var id = $('#users-table').DataTable().row('.selected').data()[0];
+                delete_non_worker(id);
+              }else{
+                toastr.error("Please select an user");
+              }
+             }
+           }
+          ],
+          "pageLength": 5,
+          "lengthMenu": [2, 5, 10, 25, 50, "All"]
+        });
+     })
+   }
+
+
+
+
+    function delete_non_worker(id){
+      $.ajax({
+          url: 'rest/user/'+id,
+          method: 'DELETE',
+          success: function(result) {
+              toastr.success('Deleted');
+              var table = $('#users-table').DataTable();
+              table.destroy();
+              get_non_workers();
+          },
+          error: function(){
+            toastr.success('Not deleted');
+          }
+      });
+  }
+
+  $('#table_content').on( 'click', 'tr', function () {
+     $('.selected').toggleClass('selected');
+      $(this).toggleClass('selected');
+  } );
+
+</script>

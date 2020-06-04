@@ -39,7 +39,13 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#forms">Forms</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger only-admin" href="#bases" >Bases</a>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1">
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger only-admin" href="#workers" >Workers</a>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1">
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger only-admin" href="#users" >Users</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#car_list">Car List</a>
@@ -48,13 +54,13 @@
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#comments">Comments</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#admin" id="only-admin" >Admin</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger only-admin" href="#admin" >Admin</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="" id="only-users" onclick="logout();">Logout</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger only-users" href="" onclick="logout();">Logout</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" id="only-guests" href="login.html">Login</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger only-guests" href="login.html">Login</a>
           </li>
 
         </ul>
@@ -62,7 +68,9 @@
     </div>
   </nav>
     <main id="spapp" role="main">
-      <section id="forms">Forms</section>
+      <section id="bases">Bases</section>
+      <section id="workers">Workers</section>
+      <section id="users">Users</section>
       <section id="car_list">Datatable</section>
       <section id="admin">Admin</section>
       <section id="comments">Comments</section>
@@ -82,16 +90,15 @@
 <script>
   if (get_logged_user_id()){
     if(get_logged_user_job()){
-      $('#only-guests').hide();
-      $('#only-users').show();
-      $('#only-admin').show();
+      $('.only-guests').hide();
+      $('.only-users').show();
+      $('.only-admin').show();
     }else{
       toastr.success("Welcome user");
-      $('#only-guests').hide();
-      $('#only-users').show();
-      $('#only-admin').hide();
+      $('.only-guests').hide();
+      $('.only-users').show();
+      $('.only-admin').hide();
     }
-
   }
   else{
     window.location = "login.html";

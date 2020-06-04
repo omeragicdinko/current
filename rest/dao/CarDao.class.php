@@ -16,5 +16,11 @@ class CarDao extends BaseDao{
     $query = "UPDATE cars SET availability='NO' WHERE id = :id";
     return @($this->execute_query1($query,["id" => $id]))[0];
   }
+
+  public function get_car_by_id($id){
+    $query = "SELECT * FROM cars WHERE id=:id";
+    return @($this->execute_query($query, ['id' => $id]))[0];
+  }
+
 }
 ?>

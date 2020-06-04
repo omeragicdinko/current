@@ -6,8 +6,8 @@ $(document).ready(function() {
 
   // define routes
   app.route({
-    view: 'forms',
-    load: 'forms.html'
+    view: 'workers',
+    load: 'workers.html'
   });
   app.route({
     view: 'car_list',
@@ -20,6 +20,14 @@ $(document).ready(function() {
   app.route({
     view: 'comments',
     load: 'comments.html'
+  });
+  app.route({
+    view: 'users',
+    load: 'users.html'
+  });
+  app.route({
+    view: 'bases',
+    load: 'bases.html'
   });
 
   // run app
