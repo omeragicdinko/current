@@ -3,7 +3,7 @@ use \Firebase\JWT\JWT;
 require 'config.php';
 
 class Auth{
-  public static function encode_jwt($token_data){
+  public function encode_jwt($token_data){
     $user_token = [
       'iat' => time(),
       'exp' => strtotime('+10 hours'),
