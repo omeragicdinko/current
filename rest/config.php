@@ -4,7 +4,7 @@ class Config{
   const CONNECTION_STRING = "mysql:host=remotemysql.com;dbname=22D7SSPtYw";
   const USERNAME="22D7SSPtYw";
   const PASSWORD="0FZwBnSQli";
-  const JWT_SECRET = "sfera123";
+  static const JWT_SECRET = "sfera123";
 }
 
 ?>
