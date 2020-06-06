@@ -58,6 +58,68 @@
 </div>
 <!--Modal: modalPush-->
 
+<div class="modal fade" id="add-car-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form id="add-car-form">
+            <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Enter the car data below</h4>
+            <button type="button" style="display:inline-block;" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                  <label for="id_base">ID base:</label>
+                  <input type="number" name="id_base" class="form-control" placeholder="Enter base ID" required="true"></input>
+                </div>
+                <div>
+                  <label for="model">Model:</label>
+                  <input type="text" name="model" class="form-control" placeholder="Enter model name" required="true"></input>
+                </div>
+
+                <div>
+                  <label for="production_year">Production year:</label>
+                  <input type="number" name="production_year" class="form-control" placeholder="Enter production year" required="true"></input>
+                </div>
+                <div>
+                  <label for="fuel">Fuel:</label>
+                  <input type="text" name="fuel" class="form-control" placeholder="Enter fuel type" required="true"></input>
+                </div>
+                <div>
+                  <label for="registration_number">Registration Number:</label>
+                  <input type="text" name="registration_number" class="form-control" placeholder="Enter registration number" required="true"></input>
+                </div>
+                <div>
+                  <label for="daily_cost">Daily cost:</label>
+                  <input type="number" name="daily_cost" class="form-control" placeholder="Enter daily cost" required="true"></input>
+                </div>
+                <div>
+                  <label for="deposit">Deposit:</label>
+                  <input type="number" name="deposit" class="form-control" placeholder="Enter deposit" required="true"></input>
+                </div>
+                <div>
+                  <label for="mileage">Mileage:</label>
+                  <input type="number" name="mileage" class="form-control" placeholder="Enter mileage" required="true"></input>
+                </div>
+                <div>
+                  <label>Availability</label>
+                 <select name="availability" class="form-control" required="true">
+                   <option value="" disabled selected>Choose your option</option>
+                   <option value="YES">YES</option>
+                   <option value="NO">NO</option>
+                 </select>
+
+               </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 <script>
 
@@ -81,6 +143,48 @@ get_cars();
           ]);
         }
 
+        var reserve_button = {
+         text: 'Reserve',
+         action: function ( e, dt, button, config ) {
+           if($('#cars-table').DataTable().row('.selected').data()){
+              var id = $('#cars-table').DataTable().row('.selected').data()[0];
+              var data = $('#cars-table').DataTable().row('.selected').data()[9];
+              if(String(data)=='NO'){
+                toastr.error("That car is not available");
+              }else{
+                $.post('rest/car/'+id, id).done(function(data) {
+                  toastr.success("Successfully reserved");
+                  $('#cars-table').DataTable().clear().destroy();
+                  get_cars();
+                  var code=id+333;//code generation - update needed
+                  $("#code").text(code);
+                  $("#modalPush").modal("show");
+                }).fail(function(error) {
+                  toastr.error(error.responseText);
+                });
+                }
+            }else{
+              toastr.error("Please select a car");
+            }
+          }
+        }
+       var add_button = {
+         text: 'Add new car',
+         action: function ( e, dt, button, config ) {
+           $('#add-car-modal').modal('toggle');
+          }
+        }
+
+        var buttons = [];
+
+        if (get_logged_user_id()){
+          if(get_logged_user_admin()){
+            buttons.push(add_button);
+          }else{
+            buttons.push(reserve_button);
+          }
+        }
+
         $("#cars-table").DataTable({
           data: dataSet,
           columns: [
@@ -96,34 +200,7 @@ get_cars();
             {title: "Availability"}
           ],
           dom: 'Bfrtip',
-          buttons: [
-          {
-           text: 'Reserve',
-           action: function ( e, dt, button, config ) {
-             if($('#cars-table').DataTable().row('.selected').data()){
-                var id = $('#cars-table').DataTable().row('.selected').data()[0];
-                var data = $('#cars-table').DataTable().row('.selected').data()[9];
-                if(String(data)=='NO'){
-                  toastr.error("That car is not available");
-                }else{
-                  $.post('rest/car/'+id, id).done(function(data) {
-                    toastr.success("Successfully reserved");
-                    $('#cars-table').DataTable().clear().destroy();
-                    get_cars();
-                    var code=id+333;//code generation - update needed
-                    $("#code").text(code);
-                    $("#modalPush").modal("show");
-                  }).fail(function(error) {
-                    toastr.error(error.responseText);
-                  });
-
-                  }
-              }else{
-                toastr.error("Please select a car");
-              }
-           }
-       }
-          ],
+          buttons: buttons,
           "pageLength": 5,
           "lengthMenu": [2, 5, 10, 25, 50, "All"]
         });
@@ -131,14 +208,35 @@ get_cars();
      })
    }
 
+   $('#add-car-form').validate({
+     submitHandler: function(form) {
+       var car = {
+         id_base: $('#add-car-form input[name="id_base"]').val(),
+         model: $('#add-car-form input[name="model"]').val(),
+         production_year: $('#add-car-form input[name="production_year"]').val(),
+         fuel: $('#add-car-form input[name="fuel"]').val(),
+         registration_number: $('#add-car-form input[name="registration_number"]').val(),
+         daily_cost: $('#add-car-form input[name="daily_cost"]').val(),
+         deposit: $('#add-car-form input[name="deposit"]').val(),
+         mileage: $('#add-car-form input[name="mileage"]').val(),
+         availability: $('#add-car-form select[name="availability"]').val()
+       }
+       $.post( "rest/car", car ).done(function(data) {
+         toastr.success('You have added a car');
+         $('#add-car-modal').modal('toggle');
+         var table = $('#cars-table').DataTable();
+         table.destroy();
+         get_cars();
+       }).fail(function(error) {
+         toastr.error(error.responseText)
+       });
+     }
+   });
+
+
    $('#tbody').on( 'click', 'tr', function () {
       $('.selected').toggleClass('selected');
        $(this).toggleClass('selected');
    } );
-
-   
-
-
-
 
 </script>

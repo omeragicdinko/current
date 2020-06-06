@@ -27,8 +27,15 @@
 
 <script>
 get_non_workers();
+
     function get_non_workers(){
-      $.get( "rest/non-workers", function( data ) {
+      $.ajax({
+     url: "rest/non-workers",
+     type: "GET",
+     beforeSend: function(xhr){
+       xhr.setRequestHeader('authorization', 'Bearer ' +  localStorage.getItem("user_token"));
+     },
+     success: function(data) {
         var dataSet = [];
         for(var i = 0; i < data.length; i++){
           dataSet.push([
@@ -74,11 +81,9 @@ get_non_workers();
           "pageLength": 5,
           "lengthMenu": [2, 5, 10, 25, 50, "All"]
         });
+      }
      })
    }
-
-
-
 
     function delete_non_worker(id){
       $.ajax({

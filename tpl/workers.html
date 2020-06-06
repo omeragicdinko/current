@@ -18,6 +18,7 @@
        <th scope="col">Phone Number</th>
        <th scope="col">Password</th>
        <th scope="col">Job</th>
+       <th scope="col">Admin</th>
      </tr>
    </thead>
    <tbody id="table_content">
@@ -31,7 +32,7 @@
       <div class="modal-content">
         <form id="worker-register-form">
             <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalLabel">Enter your data for registation</h4>
+            <h4 class="modal-title" id="exampleModalLabel">Enter worker data</h4>
             <button type="button" style="display:inline-block;" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -67,12 +68,20 @@
                   <input type="number" name="phone_number" class="form-control" placeholder="Enter your phone number" required="true"></input>
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
+                    <label>Password:</label>
                     <input type="password" class="form-control" placeholder="Password" required="true"></input>
                 </div>
                 <div>
-                    <label>Job</label>
-                    <input type="text" name="job" class="form-control" placeholder="Job" required="true"></input>
+                  <label for="job">Job:</label>
+                  <input type="text" name="job" class="form-control" placeholder="Enter job title" required="true"></input>
+                </div>
+                <div>
+                    <label>Admin</label>
+                    <select name="admin" class="form-control" required="true">
+                      <option value="" disabled selected>Choose your option</option>
+                      <option value=1>YES</option>
+                      <option value=0>NO</option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -87,7 +96,13 @@
 <script>
 get_workers();
     function get_workers(){
-      $.get( "rest/workers", function( data ) {
+      $.ajax({
+     url: "rest/workers",
+     type: "GET",
+     beforeSend: function(xhr){
+       xhr.setRequestHeader('authorization', 'Bearer ' +  localStorage.getItem("user_token"));
+     },
+     success: function( data ) {
         var dataSet = [];
         for(var i = 0; i < data.length; i++){
           dataSet.push([
@@ -100,7 +115,8 @@ get_workers();
             data[i].country,
             data[i].phone_number,
             data[i].password,
-            data[i].job
+            data[i].job,
+            data[i].admin
           ]);
         }
 
@@ -116,7 +132,8 @@ get_workers();
             {title: "Country"},
             {title: "Phone Number"},
             {title: "Password"},
-            {title: "Job"}
+            {title: "Job"},
+            {title: "Admin"}
           ],
           dom: 'Bfrtip',
           buttons: [
@@ -141,6 +158,7 @@ get_workers();
           "pageLength": 5,
           "lengthMenu": [2, 5, 10, 25, 50, "All"]
         });
+      }
      })
    }
 
@@ -163,22 +181,40 @@ get_workers();
 
     $('#worker-register-form').validate({
       submitHandler: function(form) {
-        var user = {
-          name: $('#worker-register-form input[name="fname"]').val(),
-          surname: $('#worker-register-form input[name="lname"]').val(),
-          email: $('#worker-register-form input[type="email"]').val(),
-          street_address: $('#worker-register-form input[name="address"]').val(),
-          city: $('#worker-register-form input[name="city"]').val(),
-          country: $('#worker-register-form input[name="country]').val(),
-          phone_number: $('#worker-register-form input[name="phone_number"]').val(),
-          password: $('#worker-register-form input[type="password"]').val(),
-          job: $('#worker-register-form input[name="job"]').val()
+        if($('#worker-register-form select[name="admin"]').val() == 0){
+          var user = {
+            name: $('#worker-register-form input[name="fname"]').val(),
+            surname: $('#worker-register-form input[name="lname"]').val(),
+            email: $('#worker-register-form input[type="email"]').val(),
+            street_address: $('#worker-register-form input[name="address"]').val(),
+            city: $('#worker-register-form input[name="city"]').val(),
+            country: $('#worker-register-form input[name="country]').val(),
+            phone_number: $('#worker-register-form input[name="phone_number"]').val(),
+            password: $('#worker-register-form input[type="password"]').val(),
+            job: $('#worker-register-form input[name="job"]').val()
+          }
+        }else{
+          var user = {
+            name: $('#worker-register-form input[name="fname"]').val(),
+            surname: $('#worker-register-form input[name="lname"]').val(),
+            email: $('#worker-register-form input[type="email"]').val(),
+            street_address: $('#worker-register-form input[name="address"]').val(),
+            city: $('#worker-register-form input[name="city"]').val(),
+            country: $('#worker-register-form input[name="country]').val(),
+            phone_number: $('#worker-register-form input[name="phone_number"]').val(),
+            password: $('#worker-register-form input[type="password"]').val(),
+            job: $('#worker-register-form input[name="job"]').val(),
+            admin: $('#worker-register-form select[name="admin"]').val()
+          }
         }
 
-        $.post( "rest/user", user ).done(function(data) {
-          toastr.success('You have been registered, Please login');
-          $('#worker-register-modal').modal('toggle');
 
+        $.post( "rest/user", user ).done(function(data) {
+          toastr.success('You have added a new worker');
+          $('#worker-register-modal').modal('toggle');
+          var table = $('#workers-table').DataTable();
+          table.destroy();
+          get_workers();
         }).fail(function(error) {
           toastr.error(error.responseText)
         });

@@ -2,7 +2,7 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS, PATCH');
 
-
+require 'Auth.php';
 
 require_once('../vendor/autoload.php');
 require_once('config.php');
@@ -18,11 +18,21 @@ Flight::register('base_dao', 'RentBaseDao');
 
 
 Flight::route('GET /users', function(){
+ $data = apache_request_headers();
+ $user_data = Auth::decode_jwt($data);
+ if(!isset($user_data['data']['admin'])){
+  Flight::halt(403, 'It is allowed only for admin users');
+ }
  $users = Flight::user_dao()->get_all();
  Flight::json($users);
 });
 
 Flight::route('GET /bases', function(){
+ $data = apache_request_headers();
+ $user_data = Auth::decode_jwt($data);
+ if(!isset($user_data['data']['admin'])){
+    Flight::halt(403, 'It is allowed only for admin users');
+ }
  $bases = Flight::base_dao()->get_all();
  Flight::json($bases);
 });
@@ -33,11 +43,31 @@ Flight::route('POST /base', function(){
 });
 
 Flight::route('GET /user/@id', function($id){
+  $data = apache_request_headers();
+  $user_data = Auth::decode_jwt($data);
+  if(!isset($user_data['data']['admin'])){
+     Flight::halt(403, 'It is allowed only for admin users');
+  }
  $users = Flight::user_dao()->get_user_by_id($id);
  Flight::json($users);
 });
 
+Flight::route('GET /base/@id', function($id){
+  $data = apache_request_headers();
+  $user_data = Auth::decode_jwt($data);
+  if(!isset($user_data['data']['admin'])){
+     Flight::halt(403, 'It is allowed only for admin users');
+  }
+ $bases = Flight::base_dao()->get_by_id($id);
+ Flight::json($bases);
+});
+
 Flight::route('GET /car/@id', function($id){
+  $data = apache_request_headers();
+  $user_data = Auth::decode_jwt($data);
+  if(!isset($user_data['data']['admin'])){
+     Flight::halt(403, 'It is allowed only for admin users');
+  }
  $cars = Flight::car_dao()->get_car_by_id($id);
  Flight::json($cars);
 });
@@ -56,13 +86,21 @@ Flight::route('POST /login', function(){
   $user = Flight::request()->data->getData();
   $db_user = Flight::user_dao()->get_user_by_email($user['email']);
 
-  if ($db_user){
-    if ($db_user['password'] == $user['password']){
-      Flight::json($db_user);
-    }else{
-      Flight::halt(404, 'Password Incorrect');
+  if($db_user){
+    if($db_user['password'] == $user['password']){
+      $token_data = [
+        'id' => $db_user['id'],
+        'email' => $db_user['email'],
+        'name' => $db_user['name'],
+        'admin' => $db_user['admin']
+      ];
+
+      $jwt = Auth::encode_jwt($token_data);
+      Flight::json(['user_token' => $jwt]);
+    } else {
+      Flight::halt(404, 'Password is not correct');
     }
-  }else{
+  } else {
     Flight::halt(404, 'User not found');
   }
 });
@@ -87,6 +125,11 @@ Flight::route('POST /comment', function(){
 });
 
 Flight::route('GET /workers', function(){
+  $data = apache_request_headers();
+  $user_data = Auth::decode_jwt($data);
+  if(!isset($user_data['data']['admin'])){
+      Flight::halt(403, 'It is allowed only for admin users');
+    }
  $workers = Flight::user_dao()->get_workers();
  Flight::json($workers);
 });
@@ -100,6 +143,11 @@ Flight::route('DELETE /base/@id', function($id){
 });
 
 Flight::route('GET /non-workers', function(){
+  $data = apache_request_headers();
+  $user_data = Auth::decode_jwt($data);
+  if(!isset($user_data['data']['admin'])){
+      Flight::halt(403, 'It is allowed only for admin users');
+    }
  $nonWorkers = Flight::user_dao()->get_non_workers();
  Flight::json($nonWorkers);
 });
@@ -108,14 +156,8 @@ Flight::route('POST /non-worker/'+id, function($id){
   Flight::user_dao()->delete_non_worker($id);
 });
 
-
-//select dodati u id_base da bi admin mogao birati zbog fk https://materializecss.com/select.html
-//autentikacija
-//final touch
-//select za avvailability
-
-
-
+//update za fann_save
+//reservation page i rent page mozda..
 
 Flight::start();
 ?>

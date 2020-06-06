@@ -12,6 +12,5 @@ class RentBaseDao extends BaseDao{
     return $this->execute_query1($query, ['id' => $id]);
   }
 
-
 }
 ?>

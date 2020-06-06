@@ -32,21 +32,21 @@
             </div>
             <div class="modal-body">
                 <div>
-                  <label for="fname">Name:</label>
-                  <input type="text" name="name" class="form-control" placeholder="Enter base name" required="true"></input>
+                  <label for="name">Name:</label>
+                  <input type="text" id="name" name="name"  class="form-control" placeholder="Enter base name" required="true"></input>
                 </div>
                 <div>
-                  <label for="address">Location:</label>
-                  <input type="text" name="location" class="form-control" placeholder="Enter base location" required="true"></input>
+                  <label for="location">Location:</label>
+                  <input type="text" id="location" name="location" class="form-control" placeholder="Enter base location" required="true"></input>
                 </div>
                 <div>
                   <label for="phone_number">Phone number:</label>
-                  <input type="number" name="phone_number" class="form-control" placeholder="Enter your phone number" required="true"></input>
+                  <input type="number" id="phone_number" name="phone_number" class="form-control" placeholder="Enter your phone number" required="true"></input>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" id="register_button" class="btn btn-primary">Register</button>
             </div>
         </form>
       </div>
@@ -55,8 +55,15 @@
 
 <script>
 get_bases();
+
     function get_bases(){
-      $.get( "rest/bases", function( data ) {
+      $.ajax({
+     url: "rest/bases",
+     type: "GET",
+     beforeSend: function(xhr){
+       xhr.setRequestHeader('authorization', 'Bearer ' +  localStorage.getItem("user_token"));
+     },
+     success: function( data ) {
         var dataSet = [];
         for(var i = 0; i < data.length; i++){
           dataSet.push([
@@ -93,11 +100,14 @@ get_bases();
             action: function ( e, dt, button, config ) {
               open_base_register_modal();
             }
-        }
+            }
+
+
           ],
           "pageLength": 5,
           "lengthMenu": [2, 5, 10, 25, 50, "All"]
         });
+      }
      })
    }
 
@@ -117,7 +127,6 @@ get_bases();
     });
 }
 
-
     $('#base-register-form').validate({
       submitHandler: function(form) {
         var base = {
@@ -125,7 +134,6 @@ get_bases();
           location: $('#base-register-form input[name="location"]').val(),
           phone_number: $('#base-register-form input[name="phone_number"]').val()
         }
-
         $.post( "rest/base", base ).done(function(data) {
           toastr.success('You have registered a new base');
           $('#base-register-modal').modal('toggle');

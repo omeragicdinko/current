@@ -7,6 +7,5 @@ class CommentDao extends BaseDao{
     parent::__construct('comments');
   }
 
-  
 }
 ?>

@@ -75,11 +75,12 @@
       <section id="admin">Admin</section>
       <section id="comments">Comments</section>
     </main>
-
+</body>
 <script src="assets/js/jquery-3.1.0.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script src="assets/js/jquery.spapp.js"></script>
 <script src="assets/js/custom.js"></script>
+<script src="js/utils.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -89,7 +90,8 @@
 
 <script>
   if (get_logged_user_id()){
-    if(get_logged_user_job()){
+    if(get_logged_user_admin()){
+      toastr.success("Welcome Admin");
       $('.only-guests').hide();
       $('.only-users').show();
       $('.only-admin').show();
@@ -107,37 +109,32 @@
 
   function logout(){
     window.localStorage.clear();
-    window.location = "index.html";
+    window.location = "login.html";
   }
 
   function get_logged_user_id(){
-    var user = window.localStorage.getItem("user");
-    if (user){
-      user = JSON.parse(user);
-      if (user.id){
-        return user.id;
-      }else{
-        return null;
-      }
-    }else{
-      return null;
-    }
-  }
-  function get_logged_user_job(){
-    var user = window.localStorage.getItem("user");
-    if (user){
-      user = JSON.parse(user);
-      if (user.job){
-        return user.job;
-      }else{
-        return null;
-      }
+    if(localStorage.getItem('user_token')){
+      var user = Utils.parseJwt(localStorage.getItem('user_token'));
+      if (user.data.id){
+          return 1;
+        }else{
+          return null;
+        }
     }else{
       return null;
     }
   }
 
+    function get_logged_user_admin(){
+      var user = Utils.parseJwt(localStorage.getItem('user_token'));
+      if (user.data.admin != null){
+          return 1;
+      }else{
+          return null;
+      }
+    }
+
 </script>
-</body>
+
 
 </html>
