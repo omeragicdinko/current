@@ -2,8 +2,8 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS, PATCH');
 
-require_once('Auth.php');
 
+require 'Auth.php';
 require_once('../vendor/autoload.php');
 require_once('config.php');
 require_once('dao/UserDao.class.php');
