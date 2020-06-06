@@ -2,7 +2,7 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS, PATCH');
 
-require 'Auth.php';
+require_once('Auth.php');
 
 require_once('../vendor/autoload.php');
 require_once('config.php');
