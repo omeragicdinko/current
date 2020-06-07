@@ -25,7 +25,7 @@ class Auth{
 
       return $user_data;
     } catch (\Throwable $e) {
-       Flight::halt(403, "Invalid token! Error: " . $e->getMessage());
+       Flight::halt(402, "Invalid token! Error: " . $e->getMessage());
     }
   }
 }
