@@ -1,29 +1,28 @@
 <?php
 require_once 'BaseDao.class.php';
 
-class RentBaseDao extends BaseDao{
+class ReservationDao extends BaseDao{
 
-  public $table = 'bases';
+  public $table = 'reservations';
 
   public function __construct(){
     parent::__construct($this->table);
   }
 
-  public function delete_base($id){
-    $query = "DELETE FROM bases WHERE id =:id";
+  public function delete_reservation($id){
+    $query = "DELETE FROM reservations WHERE id =:id";
     return $this->execute_query1($query, ['id' => $id]);
   }
 
-  public function update_base($base, $base_id){
-    $entity[':id'] = $base_id;
+  public function update_status($reservation, $reservation_id){
+    $entity[':id'] = $reservation_id;
     $query= 'UPDATE '.  $this->table . ' SET ';
-    foreach ($base as $key => $value) {
+    foreach ($reservation as $key => $value) {
       $query .= $key . '=:' . $key . ', ';
       $entity[':' . $key] = $value;
     }
     $query = rtrim($query,', ') . ' WHERE id=:id';
     return $this->update($entity, $query);
   }
-
 }
 ?>

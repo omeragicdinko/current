@@ -3,8 +3,10 @@ require_once 'BaseDao.class.php';
 
 class UserDao extends BaseDao{
 
+  public $table = 'users';
+
   public function __construct(){
-    parent::__construct('users');
+    parent::__construct($this->table);
   }
 
   public function get_user_by_email($email){

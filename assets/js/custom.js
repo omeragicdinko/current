@@ -14,8 +14,8 @@ $(document).ready(function() {
     load: 'car_list.html'
   });
   app.route({
-    view: 'admin',
-    load: 'admin.html'
+    view: 'reservations',
+    load: 'reservations.html'
   });
   app.route({
     view: 'comments',

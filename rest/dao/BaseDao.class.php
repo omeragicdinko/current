@@ -49,6 +49,25 @@ class BaseDao {
     return $this->execute_query("SELECT * FROM {$this->table_name}", []);
   }
 
+  public function execute($entity, $query){
+    try {
+      $stmt = $this->pdo->prepare($query);
+      if ($entity){
+        foreach($entity as $key => $value){
+          $stmt->bindValue($key, $value);
+        }
+      }
+      $stmt->execute();
+      return $stmt;
+    } catch (PDOException $e) {
+      throw $e;
+    }
+  }
+
+  public function update($entity, $query){
+    $this->execute($entity, $query);
+  }
+
 }
 
 ?>

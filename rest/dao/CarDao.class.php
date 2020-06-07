@@ -3,8 +3,10 @@ require_once 'BaseDao.class.php';
 
 class CarDao extends BaseDao{
 
+  public $table = 'cars';
+
   public function __construct(){
-    parent::__construct('cars');
+    parent::__construct($this->table);
   }
 
   public function get_car_info(){

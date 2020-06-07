@@ -10,21 +10,32 @@ require_once('dao/UserDao.class.php');
 require_once('dao/CarDao.class.php');
 require_once('dao/CommentDao.class.php');
 require_once('dao/RentBaseDao.class.php');
+require_once('dao/ReservationDao.class.php');
 
 Flight::register('user_dao', 'UserDao');
 Flight::register('car_dao', 'CarDao');
 Flight::register('comment_dao', 'CommentDao');
 Flight::register('base_dao', 'RentBaseDao');
-
+Flight::register('reservation_dao', 'ReservationDao');
 
 Flight::route('GET /users', function(){
- $data = apache_request_headers();
+ $data = getallheaders();
  $user_data = Auth::decode_jwt($data);
  if(!isset($user_data['data']['admin'])){
   Flight::halt(403, 'It is allowed only for admin users');
  }
  $users = Flight::user_dao()->get_all();
  Flight::json($users);
+});
+
+Flight::route('GET /reservations', function(){
+ $data = getallheaders();
+ $user_data = Auth::decode_jwt($data);
+ if(!isset($user_data['data']['admin'])){
+  Flight::halt(403, 'It is allowed only for admin users');
+ }
+ $reservations = Flight::reservation_dao()->get_all();
+ Flight::json($reservations);
 });
 
 Flight::route('GET /bases', function(){
@@ -59,6 +70,16 @@ Flight::route('GET /base/@id', function($id){
      Flight::halt(403, 'It is allowed only for admin users');
   }
  $bases = Flight::base_dao()->get_by_id($id);
+ Flight::json($bases);
+});
+
+Flight::route('GET /reservation/@id', function($id){
+  $data = apache_request_headers();
+  $user_data = Auth::decode_jwt($data);
+  if(!isset($user_data['data']['admin'])){
+     Flight::halt(403, 'It is allowed only for admin users');
+  }
+ $bases = Flight::reservation_dao()->get_by_id($id);
  Flight::json($bases);
 });
 
@@ -110,8 +131,28 @@ Flight::route('GET /cars', function(){
  Flight::json($cars);
 });
 
-Flight::route('POST /car/@id', function($id){
+Flight::route('POST /car/availability/@id', function($id){
     Flight::car_dao()->update_availability($id);
+});
+
+Flight::route('POST /bases', function(){
+    $request = Flight::request()->data->getData();
+    $request['id'] = $request['id'];
+    $id = $request['id'];
+    $request['name'] = $request['name'];
+    $request['location'] = $request['location'];
+    $request['phone_number'] = $request['phone_number'];
+    Flight::base_dao()->update_base($request, $id);
+    Flight::json('Updated');
+});
+
+Flight::route('POST /reservation/update', function(){
+    $request = Flight::request()->data->getData();
+    $request['id'] = $request['id'];
+    $id = $request['id'];
+    $request['status'] = $request['status'];
+    Flight::reservation_dao()->update_status($request, $id);
+    Flight::json('Updated');
 });
 
 Flight::route('GET /comments', function(){
@@ -140,6 +181,10 @@ Flight::route('DELETE /user/@id', function($id){
 
 Flight::route('DELETE /base/@id', function($id){
   Flight::base_dao()->delete_base($id);
+});
+
+Flight::route('DELETE /reservation/@id', function($id){
+  Flight::reservation_dao()->delete_reservation($id);
 });
 
 Flight::route('GET /non-workers', function(){

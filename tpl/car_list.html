@@ -152,7 +152,7 @@ get_cars();
               if(String(data)=='NO'){
                 toastr.error("That car is not available");
               }else{
-                $.post('rest/car/'+id, id).done(function(data) {
+                $.post('rest/car/availability/'+id, id).done(function(data) {
                   toastr.success("Successfully reserved");
                   $('#cars-table').DataTable().clear().destroy();
                   get_cars();
