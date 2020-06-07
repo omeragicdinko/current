@@ -127,7 +127,7 @@
 
     function get_logged_user_admin(){
       var user = Utils.parseJwt(localStorage.getItem('user_token'));
-      if (user.data.admin != null){
+      if (user.data.admin != 0){
           return 1;
       }else{
           return null;

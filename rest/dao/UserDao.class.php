@@ -30,7 +30,7 @@ class UserDao extends BaseDao{
   }
 
   public function get_non_workers(){
-    $query = "SELECT * FROM users WHERE job IS null";
+    $query = "SELECT * FROM users WHERE job LIKE '-'";
     return $this->execute_query($query, []);
   }
 
@@ -38,6 +38,18 @@ class UserDao extends BaseDao{
     $query = "DELETE * FROM users WHERE id =:id";
     return $this->execute_query1($query, ['id' => $id]);
   }
+
+  public function update_user($user, $user_id){
+    $entity[':id'] = $user_id;
+    $query= 'UPDATE '.  $this->table . ' SET ';
+    foreach ($user as $key => $value) {
+      $query .= $key . '=:' . $key . ', ';
+      $entity[':' . $key] = $value;
+    }
+    $query = rtrim($query,', ') . ' WHERE id=:id';
+    return $this->update($entity, $query);
+  }
+
 
 }
 ?>

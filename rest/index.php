@@ -21,7 +21,7 @@ Flight::register('reservation_dao', 'ReservationDao');
 Flight::route('GET /users', function(){
  $data = getallheaders();
  $user_data = Auth::decode_jwt($data);
- if(!isset($user_data['data']['admin'])){
+ if(!($user_data['data']['admin']>0)){
   Flight::halt(403, 'It is allowed only for admin users');
  }
  $users = Flight::user_dao()->get_all();
@@ -31,7 +31,7 @@ Flight::route('GET /users', function(){
 Flight::route('GET /reservations', function(){
  $data = getallheaders();
  $user_data = Auth::decode_jwt($data);
- if(!isset($user_data['data']['admin'])){
+ if(!($user_data['data']['admin']>0)){
   Flight::halt(403, 'It is allowed only for admin users');
  }
  $reservations = Flight::reservation_dao()->get_all();
@@ -41,7 +41,7 @@ Flight::route('GET /reservations', function(){
 Flight::route('GET /bases', function(){
  $data = apache_request_headers();
  $user_data = Auth::decode_jwt($data);
- if(!isset($user_data['data']['admin'])){
+ if(!($user_data['data']['admin']>0)){
     Flight::halt(123, 'It is allowed only for admin users');
  }
  $bases = Flight::base_dao()->get_all();
@@ -56,7 +56,7 @@ Flight::route('POST /base', function(){
 Flight::route('GET /user/@id', function($id){
   $data = apache_request_headers();
   $user_data = Auth::decode_jwt($data);
-  if(!isset($user_data['data']['admin'])){
+  if(!($user_data['data']['admin']>0)){
      Flight::halt(403, 'It is allowed only for admin users');
   }
  $users = Flight::user_dao()->get_user_by_id($id);
@@ -66,7 +66,7 @@ Flight::route('GET /user/@id', function($id){
 Flight::route('GET /base/@id', function($id){
   $data = apache_request_headers();
   $user_data = Auth::decode_jwt($data);
-  if(!isset($user_data['data']['admin'])){
+  if(!($user_data['data']['admin']>0)){
      Flight::halt(403, 'It is allowed only for admin users');
   }
  $bases = Flight::base_dao()->get_by_id($id);
@@ -76,7 +76,7 @@ Flight::route('GET /base/@id', function($id){
 Flight::route('GET /reservation/@id', function($id){
   $data = apache_request_headers();
   $user_data = Auth::decode_jwt($data);
-  if(!isset($user_data['data']['admin'])){
+  if(!($user_data['data']['admin']>0)){
      Flight::halt(403, 'It is allowed only for admin users');
   }
  $bases = Flight::reservation_dao()->get_by_id($id);
@@ -86,7 +86,7 @@ Flight::route('GET /reservation/@id', function($id){
 Flight::route('GET /car/@id', function($id){
   $data = apache_request_headers();
   $user_data = Auth::decode_jwt($data);
-  if(!isset($user_data['data']['admin'])){
+  if(!($user_data['data']['admin']>0)){
      Flight::halt(403, 'It is allowed only for admin users');
   }
  $cars = Flight::car_dao()->get_car_by_id($id);
@@ -146,6 +146,25 @@ Flight::route('POST /bases', function(){
     Flight::json('Updated');
 });
 
+Flight::route('POST /users', function(){
+    $request = Flight::request()->data->getData();
+    $request['id'] = $request['id'];
+    $id = $request['id'];
+    $request['surname'] = $request['surname'];
+    $request['name'] = $request['name'];
+    $request['email'] = $request['email'];
+    $request['street_address'] = $request['street_address'];
+    $request['city'] = $request['city'];
+    $request['country'] = $request['country'];
+    $request['job'] = $request['job'];
+    $request['password'] = $request['password'];
+    $request['phone_number'] = $request['phone_number'];
+    $request['admin'] = $request['admin'];
+    Flight::user_dao()->update_user($request, $id);
+    Flight::json('Updated');
+});
+
+
 Flight::route('POST /reservation/update', function(){
     $request = Flight::request()->data->getData();
     $request['id'] = $request['id'];
@@ -168,7 +187,7 @@ Flight::route('POST /comment', function(){
 Flight::route('GET /workers', function(){
   $data = apache_request_headers();
   $user_data = Auth::decode_jwt($data);
-  if(!isset($user_data['data']['admin'])){
+  if(!($user_data['data']['admin'] > 0)){
       Flight::halt(403, 'It is allowed only for admin users');
     }
  $workers = Flight::user_dao()->get_workers();
@@ -190,7 +209,7 @@ Flight::route('DELETE /reservation/@id', function($id){
 Flight::route('GET /non-workers', function(){
   $data = apache_request_headers();
   $user_data = Auth::decode_jwt($data);
-  if(!isset($user_data['data']['admin'])){
+  if(!($user_data['data']['admin']>0)){
       Flight::halt(403, 'It is allowed only for admin users');
     }
  $nonWorkers = Flight::user_dao()->get_non_workers();
