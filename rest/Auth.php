@@ -18,6 +18,7 @@ class Auth{
   public static function decode_jwt($data){
     try{
       $jwt = explode("Bearer ", $data['authorization'])[1];
+
       $user_data = (array) JWT::decode($jwt, Config::JWT_SECRET, ['HS256']);
 
       $user_data['data'] = (array) $user_data['data'];
