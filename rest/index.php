@@ -84,11 +84,6 @@ Flight::route('GET /reservation/@id', function($id){
 });
 
 Flight::route('GET /car/@id', function($id){
-  $data = apache_request_headers();
-  $user_data = Auth::decode_jwt($data);
-  if(!($user_data['data']['admin']>0)){
-     Flight::halt(403, 'It is allowed only for admin users');
-  }
  $cars = Flight::car_dao()->get_car_by_id($id);
  Flight::json($cars);
 });
@@ -96,6 +91,11 @@ Flight::route('GET /car/@id', function($id){
 Flight::route('POST /user', function(){
     $user = Flight::request()->data->getData();
     Flight::user_dao()->add($user);
+});
+
+Flight::route('POST /reservation', function(){
+    $reservation = Flight::request()->data->getData();
+    Flight::reservation_dao()->add($reservation);
 });
 
 Flight::route('POST /car', function(){
@@ -113,6 +113,8 @@ Flight::route('POST /login', function(){
         'id' => $db_user['id'],
         'email' => $db_user['email'],
         'name' => $db_user['name'],
+        'surname' => $db_user['surname'],
+        'phone_number' => $db_user['phone_number'],
         'admin' => $db_user['admin']
       ];
 
@@ -143,6 +145,23 @@ Flight::route('POST /bases', function(){
     $request['location'] = $request['location'];
     $request['phone_number'] = $request['phone_number'];
     Flight::base_dao()->update_base($request, $id);
+    Flight::json('Updated');
+});
+
+Flight::route('POST /cars', function(){
+    $request = Flight::request()->data->getData();
+    $request['id'] = $request['id'];
+    $id = $request['id'];
+    $request['id_base'] = $request['id_base'];
+    $request['model'] = $request['model'];
+    $request['production_year'] = $request['production_year'];
+    $request['availability'] = $request['availability'];
+    $request['fuel'] = $request['fuel'];
+    $request['registration_number'] = $request['registration_number'];
+    $request['daily_cost'] = $request['daily_cost'];
+    $request['deposit'] = $request['deposit'];
+    $request['mileage'] = $request['mileage'];
+    Flight::car_dao()->update_car($request, $id);
     Flight::json('Updated');
 });
 

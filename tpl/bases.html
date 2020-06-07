@@ -228,7 +228,7 @@ get_bases();
             $("#base-edit-form input[name=phone_number]").val(data[0].phone_number);
       },
       error: function(){
-        toastr.success('Not deleted');
+        toastr.error(error.responseText);
       }
     });
     }

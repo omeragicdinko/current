@@ -24,5 +24,16 @@ class CarDao extends BaseDao{
     return @($this->execute_query($query, ['id' => $id]))[0];
   }
 
+  public function update_car($car, $car_id){
+    $entity[':id'] = $car_id;
+    $query= 'UPDATE '.  $this->table . ' SET ';
+    foreach ($car as $key => $value) {
+      $query .= $key . '=:' . $key . ', ';
+      $entity[':' . $key] = $value;
+    }
+    $query = rtrim($query,', ') . ' WHERE id=:id';
+    return $this->update($entity, $query);
+  }
+
 }
 ?>
