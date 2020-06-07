@@ -29,6 +29,7 @@ Flight::route('GET /users', function(){
 
 Flight::route('GET /bases', function(){
  $data = getallheaders();
+ 
  $user_data = Auth::decode_jwt($data);
  if(!isset($user_data['data']['admin'])){
     Flight::halt(403, 'It is allowed only for admin users');
