@@ -61,7 +61,7 @@ get_bases();
      url: "rest/bases",
      type: "GET",
      beforeSend: function(xhr){
-       xhr.setRequestHeader('authorization', 'Bearer ' +  localStorage.getItem("user_token"));
+       xhr.setRequestHeader('a', 'Bearer ' +  localStorage.getItem("user_token"));
      },
      success: function( data ) {
         var dataSet = [];
