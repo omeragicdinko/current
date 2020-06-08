@@ -15,7 +15,7 @@ class Auth{
     return $jwt;
   }
 
-  public function decode_jwt($data){
+  public static function decode_jwt($data){
 
       $jwt = explode("Bearer ", $data['authorization'])[1];
 
