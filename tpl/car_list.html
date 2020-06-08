@@ -289,7 +289,6 @@ get_cars();
                 var name = user.data.name + " " +user.data.surname;
                 var phone_number = user.data.phone_number;
                 open_reservation_modal(id, name, phone_number, code);
-
                 }
             }else{
               toastr.error("Please select a car");
@@ -441,10 +440,10 @@ get_cars();
          reservation_code: code
        }
        $.post( "rest/reservation", reservation ).done(function(data) {
-         toastr.success('You have reserved a car');
+
          $('#reservation-modal').modal('toggle');
          $.post('rest/car/availability/'+id, id).done(function(data) {
-           toastr.success("Successfully reserved");
+           toastr.success('You have reserved a car');
            $('#cars-table').DataTable().clear().destroy();
            get_cars();
            $("#code").text(code);
