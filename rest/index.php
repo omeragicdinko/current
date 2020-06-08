@@ -139,46 +139,22 @@ Flight::route('POST /car/availability/@id', function($id){
 
 Flight::route('POST /bases', function(){
     $request = Flight::request()->data->getData();
-    $request['id'] = $request['id'];
     $id = $request['id'];
-    $request['name'] = $request['name'];
-    $request['location'] = $request['location'];
-    $request['phone_number'] = $request['phone_number'];
     Flight::base_dao()->update_base($request, $id);
     Flight::json('Updated');
 });
 
 Flight::route('POST /cars', function(){
     $request = Flight::request()->data->getData();
-    $request['id'] = $request['id'];
     $id = $request['id'];
-    $request['id_base'] = $request['id_base'];
-    $request['model'] = $request['model'];
-    $request['production_year'] = $request['production_year'];
-    $request['availability'] = $request['availability'];
-    $request['fuel'] = $request['fuel'];
-    $request['registration_number'] = $request['registration_number'];
-    $request['daily_cost'] = $request['daily_cost'];
-    $request['deposit'] = $request['deposit'];
-    $request['mileage'] = $request['mileage'];
+
     Flight::car_dao()->update_car($request, $id);
     Flight::json('Updated');
 });
 
 Flight::route('POST /users', function(){
     $request = Flight::request()->data->getData();
-    $request['id'] = $request['id'];
     $id = $request['id'];
-    $request['surname'] = $request['surname'];
-    $request['name'] = $request['name'];
-    $request['email'] = $request['email'];
-    $request['street_address'] = $request['street_address'];
-    $request['city'] = $request['city'];
-    $request['country'] = $request['country'];
-    $request['job'] = $request['job'];
-    $request['password'] = $request['password'];
-    $request['phone_number'] = $request['phone_number'];
-    $request['admin'] = $request['admin'];
     Flight::user_dao()->update_user($request, $id);
     Flight::json('Updated');
 });
@@ -186,9 +162,7 @@ Flight::route('POST /users', function(){
 
 Flight::route('POST /reservation/update', function(){
     $request = Flight::request()->data->getData();
-    $request['id'] = $request['id'];
     $id = $request['id'];
-    $request['status'] = $request['status'];
     Flight::reservation_dao()->update_status($request, $id);
     Flight::json('Updated');
 });

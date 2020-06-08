@@ -164,8 +164,7 @@ get_bases();
         method: 'DELETE',
         success: function(result) {
             toastr.success('Deleted');
-            var table = $('#bases-table').DataTable();
-            table.destroy();
+            $('#bases-table').DataTable().clear().destroy();
             get_bases();
         },
         error: function(){
@@ -184,8 +183,7 @@ get_bases();
         $.post( "rest/base", base ).done(function(data) {
           toastr.success('You have registered a new base');
           $('#base-register-modal').modal('toggle');
-          var table = $('#bases-table').DataTable();
-          table.destroy();
+          $('#bases-table').DataTable().clear().destroy();
           get_bases();
         }).fail(function(error) {
           toastr.error(error.responseText)
@@ -204,8 +202,7 @@ get_bases();
         $.post( "rest/bases", base).done(function(data) {
           toastr.success('You have updated a base');
           $('#base-edit-modal').modal('toggle');
-          var table = $('#bases-table').DataTable();
-          table.destroy();
+          $('#bases-table').DataTable().clear().destroy();
           get_bases();
         }).fail(function(error) {
           toastr.error(error.responseText)

@@ -20,7 +20,7 @@ class UserDao extends BaseDao{
   }
 
   public function get_workers(){
-    $query = "SELECT * FROM users WHERE job LIKE NOT '-'";
+    $query = "SELECT * FROM users WHERE job != '-'";
     return $this->execute_query($query, []);
   }
 

@@ -162,8 +162,7 @@ get_non_workers();
           method: 'DELETE',
           success: function(result) {
               toastr.success('Deleted');
-              var table = $('#users-table').DataTable();
-              table.destroy();
+              $('#users-table').DataTable().clear().destroy();
               get_non_workers();
           },
           error: function(){
@@ -217,8 +216,7 @@ get_non_workers();
           $.post( "rest/users", user ).done(function(data) {
             toastr.success('You have updated an user');
             $('#user-edit-modal').modal('toggle');
-            var table = $('#users-table').DataTable();
-            table.destroy();
+            $('#users-table').DataTable().clear().destroy();
             get_non_workers();
           }).fail(function(error) {
             toastr.error(error.responseText)

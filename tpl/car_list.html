@@ -364,8 +364,7 @@ get_cars();
        $.post( "rest/car", car ).done(function(data) {
          toastr.success('You have added a car');
          $('#add-car-modal').modal('toggle');
-         var table = $('#cars-table').DataTable();
-         table.destroy();
+         $('#cars-table').DataTable().clear().destroy();
          get_cars();
        }).fail(function(error) {
          toastr.error(error.responseText)
@@ -475,8 +474,7 @@ get_cars();
        $.post( "rest/cars", car).done(function(data) {
          toastr.success('You have updated a car');
          $('#car-edit-modal').modal('toggle');
-         var table = $('#cars-table').DataTable();
-         table.destroy();
+         $('#cars-table').DataTable().clear().destroy();
          get_cars();
        }).fail(function(error) {
          toastr.error(error.responseText)
@@ -490,8 +488,7 @@ get_cars();
          method: 'DELETE',
          success: function(result) {
              toastr.success('Deleted');
-             var table = $('#cars-table').DataTable();
-             table.destroy();
+             $('#cars-table').DataTable().clear().destroy();
              get_cars();
          },
          error: function(){

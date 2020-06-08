@@ -250,8 +250,7 @@ get_workers();
         method: 'DELETE',
         success: function(result) {
             toastr.success('Deleted');
-            var table = $('#workers-table').DataTable();
-            table.destroy();
+            $('#workers-table').DataTable().clear().destroy();
             get_workers();
         },
         error: function(){
@@ -279,8 +278,7 @@ get_workers();
         $.post( "rest/user", user ).done(function(data) {
           toastr.success('You have added a new worker');
           $('#worker-register-modal').modal('toggle');
-          var table = $('#workers-table').DataTable();
-          table.destroy();
+          $('#workers-table').DataTable().clear().destroy();
           get_workers();
         }).fail(function(error) {
           toastr.error(error.responseText)
@@ -340,8 +338,7 @@ get_workers();
           $.post( "rest/users", user ).done(function(data) {
             toastr.success('You have updated a worker');
             $('#worker-edit-modal').modal('toggle');
-            var table = $('#workers-table').DataTable();
-            table.destroy();
+            $('#workers-table').DataTable().clear().destroy();
             get_workers();
           }).fail(function(error) {
             toastr.error(error.responseText)

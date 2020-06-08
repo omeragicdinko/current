@@ -137,8 +137,7 @@ get_reservations();
         method: 'DELETE',
         success: function(result) {
             toastr.success('Deleted');
-            var table = $('#reservations-table').DataTable();
-            table.destroy();
+            $('#reservations-table').DataTable().clear().destroy();
             get_reservations();
         },
         error: function(){
