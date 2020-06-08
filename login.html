@@ -143,7 +143,9 @@
         city: $('#register-form input[name="city"]').val(),
         country: $('#register-form input[name="country]').val(),
         phone_number: $('#register-form input[name="phone_number"]').val(),
-        password: $('#register-form input[type="password"]').val()
+        password: $('#register-form input[type="password"]').val(),
+        job: '-',
+        admin: 0
       }
 
       $.post( "rest/user", user ).done(function(data) {
