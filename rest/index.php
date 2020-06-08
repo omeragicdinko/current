@@ -217,8 +217,6 @@ Flight::route('POST /non-worker/'+id, function($id){
   Flight::user_dao()->delete_non_worker($id);
 });
 
-//update za fann_save
-//reservation page i rent page mozda..
 
 Flight::start();
 ?>
