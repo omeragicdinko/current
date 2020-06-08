@@ -230,11 +230,10 @@ function generateRandomNumb(min, max) {
   });
 
   function get_logged_user_full_name(){
-    var user = window.localStorage.getItem("user");
-    if (user){
-      user = JSON.parse(user);
-      if (user.id){
-        return user.name+" "+user.surname;
+    if(localStorage.getItem('user_token')){
+      var user = Utils.parseJwt(localStorage.getItem('user_token'));
+      if (user.data.id){
+        return user.data.name+" "+user.data.surname;
       }else{
         return null;
       }
@@ -243,11 +242,10 @@ function generateRandomNumb(min, max) {
     }
   }
   function get_logged_user_email(){
-    var user = window.localStorage.getItem("user");
-    if (user){
-      user = JSON.parse(user);
-      if (user.id){
-        return user.email;
+    if(localStorage.getItem('user_token')){
+      var user = Utils.parseJwt(localStorage.getItem('user_token'));
+      if (user.data.id){
+        return user.data.email;
       }else{
         return null;
       }

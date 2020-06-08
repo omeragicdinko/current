@@ -221,7 +221,7 @@
                       <input type="hidden" name="registration_number" class="form-control" readonly></input>
                     </div>
                     <div>
-                      <label for="daily_cost">Fuel:</label>
+                      <label for="daily_cost">Daily cost:</label>
                       <input type="number" name="daily_cost" class="form-control" readonly></input>
                     </div>
                     <div>
@@ -230,6 +230,9 @@
                     </div>
                     <div>
                       <input type="hidden" name="status" class="form-control" readonly></input>
+                    </div>
+                    <div>
+                      <input type="hidden" name="car_id" class="form-control" readonly></input>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -270,20 +273,12 @@ get_cars();
               if(String(data)=='NO'){
                 toastr.error("That car is not available");
               }else{
-                var code=333;//generate random numbers..
+                var code=Math.round(Math.random()*100000);
                 var user = Utils.parseJwt(localStorage.getItem('user_token'));
                 var name = user.data.name + " " +user.data.surname;
                 var phone_number = user.data.phone_number;
                 open_reservation_modal(id, name, phone_number, code);
-                $.post('rest/car/availability/'+id, id).done(function(data) {
-                  toastr.success("Successfully reserved");
-                  $('#cars-table').DataTable().clear().destroy();
-                  get_cars();
-                  $("#code").text(code);
-                  $("#modalPush").modal("show");
-                }).fail(function(error) {
-                  toastr.error(error.responseText);
-                });
+
                 }
             }else{
               toastr.error("Please select a car");
@@ -408,6 +403,8 @@ get_cars();
      $("#reservation-form input[name=deposit]").val(data.deposit);
      $("#reservation-form input[name=status]").val("PENDING");
      $("#reservation-form input[name=code]").val(code);
+     $("#reservation-form input[name=car_id]").val(id);
+
    },
     error: function(){
      toastr.error(error.responseText);
@@ -417,6 +414,8 @@ get_cars();
 
    $('#reservation-form').validate({
      submitHandler: function(form) {
+       var id =  $('#reservation-form input[name="car_id"]').val();
+       var code = $('#reservation-form input[name="code"]').val();
        var reservation = {
          customer_name: $('#reservation-form input[name="name"]').val(),
          customer_phone_number: $('#reservation-form input[name="phone_number"]').val(),
@@ -427,11 +426,20 @@ get_cars();
          daily_cost: $('#reservation-form input[name="daily_cost"]').val(),
          deposit: $('#reservation-form input[name="deposit"]').val(),
          status: $('#reservation-form input[name="status"]').val(),
-         reservation_code: $('#reservation-form input[name="code"]').val()
+         reservation_code: code
        }
        $.post( "rest/reservation", reservation ).done(function(data) {
          toastr.success('You have reserved a car');
          $('#reservation-modal').modal('toggle');
+         $.post('rest/car/availability/'+id, id).done(function(data) {
+           toastr.success("Successfully reserved");
+           $('#cars-table').DataTable().clear().destroy();
+           get_cars();
+           $("#code").text(code);
+           $("#modalPush").modal("show");
+         }).fail(function(error) {
+           toastr.error(error.responseText);
+         });
        }).fail(function(error) {
          toastr.error(error.responseText)
        });

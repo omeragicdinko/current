@@ -16,7 +16,7 @@ class Auth{
   }
 
   public function decode_jwt($data){
-    try{
+
       $jwt = explode("Bearer ", $data['authorization'])[1];
 
       $user_data = (array) JWT::decode($jwt, Config::JWT_SECRET, ['HS256']);
@@ -24,9 +24,7 @@ class Auth{
       $user_data['data'] = (array) $user_data['data'];
 
       return $user_data;
-    } catch (\Throwable $e) {
-       Flight::halt(403, "Invalid token! Error: " . $e->getMessage());
-    }
+
   }
 }
 
