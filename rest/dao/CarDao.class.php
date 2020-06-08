@@ -35,5 +35,10 @@ class CarDao extends BaseDao{
     return $this->update($entity, $query);
   }
 
+  public function delete_car($id){
+    $query = "DELETE FROM cars WHERE id =:id";
+    return $this->execute_query1($query, ['id' => $id]);
+  }
+
 }
 ?>

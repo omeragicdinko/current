@@ -153,6 +153,9 @@ get_non_workers();
      })
    }
 
+
+
+
     function delete_non_worker(id){
       $.ajax({
           url: 'rest/user/'+id,
@@ -224,11 +227,12 @@ get_non_workers();
       });
 
 
+        $('#table_content').on( 'click', 'tr', function () {
+           $('.selected').toggleClass('selected');
+            $(this).toggleClass('selected');
+        } );
 
 
-  $('#table_content').on( 'click', 'tr', function () {
-     $('.selected').toggleClass('selected');
-      $(this).toggleClass('selected');
-  } );
+
 
 </script>

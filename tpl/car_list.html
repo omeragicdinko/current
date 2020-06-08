@@ -264,6 +264,17 @@ get_cars();
           ]);
         }
 
+        var delete_button = {
+          text: 'Delete car',
+          action: function ( e, dt, button, config ) {
+            if($('#cars-table').DataTable().row('.selected').data()){
+               var id = $('#cars-table').DataTable().row('.selected').data()[0];
+               delete_car(id);
+             }else{
+               toastr.error("Please select a car");
+             }
+           }
+         }
         var reserve_button = {
          text: 'Reserve',
          action: function ( e, dt, button, config ) {
@@ -307,6 +318,7 @@ get_cars();
 
         if (get_logged_user_id()){
           if(get_logged_user_admin()){
+            buttons.push(delete_button);
             buttons.push(add_button);
             buttons.push(edit_button);
           }else{
@@ -472,6 +484,22 @@ get_cars();
        });
      }
    });
+
+   function delete_car(id){
+     $.ajax({
+         url: 'rest/car/'+id,
+         method: 'DELETE',
+         success: function(result) {
+             toastr.success('Deleted');
+             var table = $('#cars-table').DataTable();
+             table.destroy();
+             get_cars();
+         },
+         error: function(){
+           toastr.success('Not deleted');
+         }
+     });
+ }
 
    $('#tbody').on( 'click', 'tr', function () {
       $('.selected').toggleClass('selected');

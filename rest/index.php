@@ -221,6 +221,10 @@ Flight::route('DELETE /base/@id', function($id){
   Flight::base_dao()->delete_base($id);
 });
 
+Flight::route('DELETE /car/@id', function($id){
+  Flight::car_dao()->delete_car($id);
+});
+
 Flight::route('DELETE /reservation/@id', function($id){
   Flight::reservation_dao()->delete_reservation($id);
 });
