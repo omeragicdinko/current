@@ -42,7 +42,7 @@ Flight::route('GET /bases', function(){
  $data = apache_request_headers();
  $user_data = Auth::decode_jwt($data);
  if(!($user_data['data']['admin']>0)){
-    Flight::halt(123, 'It is allowed only for admin users');
+    Flight::halt(403, 'It is allowed only for admin users');
  }
  $bases = Flight::base_dao()->get_all();
  Flight::json($bases);
